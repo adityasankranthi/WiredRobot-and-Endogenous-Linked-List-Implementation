@@ -18,7 +18,7 @@ public class WiredRobot implements Robot {
 
 	@Override
 	public Part getPart(String function, int index) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		return null;
 	}
 
@@ -32,12 +32,6 @@ public class WiredRobot implements Robot {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return super.toString();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
 	}
 
 
