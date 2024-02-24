@@ -4,24 +4,6 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 
 public class WiredRobot implements Robot {
-	@Override
-	public boolean addPart(String function, Part part) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Part removePart(String function) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Part getPart(String function, int index) {
-		// TODO Auto-generated method stub 
-		return null;
-	}
-
 	private static Consumer<String> reporter = (s) -> System.out.println("Invariant error: "+ s);
 	
 	private boolean report(String error) {
@@ -64,14 +46,38 @@ public class WiredRobot implements Robot {
 	
 	private boolean wellFormed() {
 		// Invariant:
-		// 1. the comparator is not null
+		if (comparator == null) return report("Comparator is null");;
 		// 2. the dummy is not null
+		if (dummy == null) return report("Dummy is null");
 		// 3. the dummy's function is null
+		if (dummy.function != null) return report("Dummy's function is not null");
 		// 4. The list starting after the dummy is null-terminated (no cycles)
 		//    Use Floyd's Tortoise and Hare algorithm
+		if (dummy.next != null) {
+			FunctionalPart slow = dummy.next;
+			FunctionalPart fast = dummy.next.next;
+            while (fast != null) {
+                if (slow == fast) return report("Found cycle in list");
+                slow = slow.next;
+                fast = fast.next;
+                if (fast != null) fast = fast.next;
+            }
+        }
 		// 5. All of the parts reachable from the dummy have non-null function
+		FunctionalPart cursor = dummy.next;
+		while (cursor != null) {
+			if (cursor.function == null) return report("Part with null function found in the list");
+			cursor = cursor.next;
+		}
 		// 6. The list starting after the dummy is in non-decreasing order 
 		//    according to the comparator
+		cursor = dummy.next;
+	    while (cursor != null && cursor.next != null) {
+	        if (comparator.compare(cursor, cursor.next) > 0) {
+	            return report("List is not in non-decreasing order");
+	        }
+	        cursor = cursor.next;
+	    }
 		// TODO
 		return true;
 	}
@@ -224,6 +230,25 @@ public class WiredRobot implements Robot {
 		}
 
 		
+	}
+
+
+	@Override
+	public boolean addPart(String function, edu.uwm.cs351.Part part) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Part removePart(String function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Part getPart(String function, int index) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
