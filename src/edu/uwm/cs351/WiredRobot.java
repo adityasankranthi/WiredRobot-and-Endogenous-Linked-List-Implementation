@@ -4,6 +4,43 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 
 public class WiredRobot implements Robot {
+	@Override
+	public boolean addPart(String function, Part part) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Part removePart(String function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Part getPart(String function, int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
+	}
+
+
 	private static Consumer<String> reporter = (s) -> System.out.println("Invariant error: "+ s);
 	
 	private boolean report(String error) {
