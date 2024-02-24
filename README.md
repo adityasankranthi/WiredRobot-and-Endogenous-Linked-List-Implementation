@@ -7,20 +7,22 @@ This is a homework assignment at University of Wisconsin-Milwaukee.
 
 ### Focus
 
-#### What is this homework assignment about?
-
+####
+This homework assignment involves implementing "endogenous" linked lists. Additionally, it covers the implementation of insertion sort.
 ### Gather
 
 #### What do I know?  What do I need to know that's new?
+I need to refresh my memory with the sorting algorithm.
 
 ### Brainstorm
 
 #### What are some ideas for solving this homework assignment?
+Following the to do list has worked well for me in the past and I am going to stick to that.
 
 ### Plan
 
 #### What will I work on first after I finish this planning part?
-
+I will learn about insertion sort. 
 
 *The preceding steps should be completed and committed by the
 Friday 10pm deadline.*
