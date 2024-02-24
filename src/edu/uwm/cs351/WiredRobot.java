@@ -22,19 +22,6 @@ public class WiredRobot implements Robot {
 		return null;
 	}
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
-	}
-
-
 	private static Consumer<String> reporter = (s) -> System.out.println("Invariant error: "+ s);
 	
 	private boolean report(String error) {
