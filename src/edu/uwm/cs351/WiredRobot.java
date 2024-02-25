@@ -133,8 +133,23 @@ public class WiredRobot implements Robot {
 
 	@Override
 	public Part removePart(String function) {
-		// TODO Auto-generated method stub
-		return null;
+	    assert wellFormed(): "invariant broke before removePart";
+	    FunctionalPart result = null;
+	    FunctionalPart cursor = getFirst();
+	    FunctionalPart lag = dummy;
+	    while (cursor != null) {
+	        if (function == null || function.equals(cursor.function)) {
+	            lag.next = cursor.next; 
+	            cursor.next = null;
+	            cursor.function = null; 
+	            result = cursor;
+	            break;
+	        }
+	        lag = cursor;
+	        cursor = cursor.next;
+	    }
+	    assert wellFormed(): "invariant broke after removePart";
+	    return result;
 	}
 
 	@Override
