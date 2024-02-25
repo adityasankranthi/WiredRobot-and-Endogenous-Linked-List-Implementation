@@ -124,9 +124,15 @@ public class WiredRobot implements Robot {
 		if(!(part instanceof FunctionalPart)) throw new IllegalArgumentException("parameter part must be a Functional Part");
 	    FunctionalPart newPart = (FunctionalPart) part; 
 	    if (newPart.function != null) throw new IllegalArgumentException("part is already in a robot");
+	    FunctionalPart lag = dummy;
+	    FunctionalPart cursor = getFirst();
 	    newPart.function = function;
-	    newPart.next = dummy.next;
-	    dummy.next = newPart;
+	    while (cursor != null && comparator.compare(cursor, newPart) < 0) {
+	        lag = cursor;
+	        cursor = cursor.next;
+	    }
+	    newPart.next = cursor;
+	    lag.next = newPart;
 	    assert wellFormed(): "invariant broke after addPart";
 	    return true;
 	}
@@ -183,6 +189,8 @@ public class WiredRobot implements Robot {
 	 */
 	public void setComparator(Comparator<FunctionalPart> comp) {
 		assert wellFormed() : "invariant broken in setComparator";
+		if (comp != null) this.comparator = comp;
+		else this.comparator = nonDiscrimination;
 		// TODO: Complete this!
 		// Hint: After handling special easy cases,
 		//   reverse the list
