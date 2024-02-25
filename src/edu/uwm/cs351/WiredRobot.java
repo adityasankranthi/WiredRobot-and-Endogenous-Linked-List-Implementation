@@ -43,9 +43,12 @@ public class WiredRobot implements Robot {
 	
 	private FunctionalPart dummy; // never null, with null function
 	private Comparator<FunctionalPart> comparator; // never null
+	private Comparator<FunctionalPart> nonDiscrimination = (p1,p2) -> 0;
 	
 	private boolean wellFormed() {
 		// Invariant:
+		// TODO
+		// 1. The comparator is not null
 		if (comparator == null) return report("Comparator is null");;
 		// 2. the dummy is not null
 		if (dummy == null) return report("Dummy is null");
@@ -78,7 +81,6 @@ public class WiredRobot implements Robot {
 	        }
 	        cursor = cursor.next;
 	    }
-		// TODO
 		return true;
 	}
 	
@@ -99,6 +101,9 @@ public class WiredRobot implements Robot {
 	 */
 	public WiredRobot(Comparator<FunctionalPart> comp) {
 		// TODO
+		if (comp != null) this.comparator = comp;
+		else this.comparator = nonDiscrimination;
+        this.dummy = new FunctionalPart();
 		assert wellFormed() : "Invariant not established by constructor";
 	}
 	
@@ -107,10 +112,32 @@ public class WiredRobot implements Robot {
 	 * @return the first part, null if this robot is empty
 	 */
 	public FunctionalPart getFirst() {
-		return null; // TODO
+		 // TODO
+		return dummy.next;
 	}
 
 	// TODO: the three robot methods
+	@Override
+	public boolean addPart(String function, Part part) {
+		if (part == null || function == null) throw new NullPointerException("function or part is null");
+	    FunctionalPart newPart = (FunctionalPart) part; 
+	    newPart.function = function;
+	    newPart.next = dummy.next;
+	    dummy.next = newPart;
+	    return true;
+	}
+
+	@Override
+	public Part removePart(String function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Part getPart(String function, int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * Change the comparator used to order the robot parts.
@@ -230,25 +257,6 @@ public class WiredRobot implements Robot {
 		}
 
 		
-	}
-
-
-	@Override
-	public boolean addPart(String function, edu.uwm.cs351.Part part) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Part removePart(String function) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Part getPart(String function, int index) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
