@@ -119,6 +119,7 @@ public class WiredRobot implements Robot {
 	// TODO: the three robot methods
 	@Override
 	public boolean addPart(String function, Part part) {
+		assert wellFormed(): "invariant broke before addPart";
 		if (part == null || function == null) throw new NullPointerException("function or part is null");
 		if(!(part instanceof FunctionalPart)) throw new IllegalArgumentException("parameter part must be a Functional Part");
 	    FunctionalPart newPart = (FunctionalPart) part; 
@@ -126,6 +127,7 @@ public class WiredRobot implements Robot {
 	    newPart.function = function;
 	    newPart.next = dummy.next;
 	    dummy.next = newPart;
+	    assert wellFormed(): "invariant broke after addPart";
 	    return true;
 	}
 
@@ -137,8 +139,23 @@ public class WiredRobot implements Robot {
 
 	@Override
 	public Part getPart(String function, int index) {
-		// TODO Auto-generated method stub
-		return null;
+	    assert wellFormed(): "invariant broke before getPart";
+	    if(index < 0) throw new IllegalArgumentException("Negative index");
+	    Part result = null;
+	    FunctionalPart cursor = getFirst();
+	    int count = 0;
+	    while (cursor != null) {
+	        if (function == null || function.equals(cursor.function)) {
+	            if (count == index) {
+	                result = cursor;
+	                break;
+	            }
+	            count++;
+	        }
+	        cursor = cursor.next;
+	    }
+	    assert wellFormed(): "invariant broke by getPart";
+	    return result;
 	}
 
 	/**
