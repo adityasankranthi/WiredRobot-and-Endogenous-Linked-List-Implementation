@@ -120,7 +120,9 @@ public class WiredRobot implements Robot {
 	@Override
 	public boolean addPart(String function, Part part) {
 		if (part == null || function == null) throw new NullPointerException("function or part is null");
+		if(!(part instanceof FunctionalPart)) throw new IllegalArgumentException("parameter part must be a Functional Part");
 	    FunctionalPart newPart = (FunctionalPart) part; 
+	    if (newPart.function != null) throw new IllegalArgumentException("part is already in a robot");
 	    newPart.function = function;
 	    newPart.next = dummy.next;
 	    dummy.next = newPart;
