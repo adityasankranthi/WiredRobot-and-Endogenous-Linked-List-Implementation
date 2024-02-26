@@ -188,18 +188,53 @@ public class WiredRobot implements Robot {
 	 * can be in any order.
 	 */
 	public void setComparator(Comparator<FunctionalPart> comp) {
-		assert wellFormed() : "invariant broken in setComparator";
-		if (comp != null) this.comparator = comp;
-		else this.comparator = nonDiscrimination;
-		// TODO: Complete this!
-		// Hint: After handling special easy cases,
-		//   reverse the list
-		//   and then insert the parts again
-		//   The solution avoids code duplication by factoring out
-		//   the insertion code in "addPart" into a helper method
-		//   that we can call here.
-		assert wellFormed() : "invariant broken by setComparator";
+	    assert wellFormed() : "invariant broken in setComparator";
+	    
+	    if (comp != null) {
+	        if (comparator == comp) return;
+	        else this.comparator = comp;
+	    } else {
+	        this.comparator = nonDiscrimination;
+	    }
+	    
+	    // Reverse the list
+	    if (this.comparator!=nonDiscrimination) {
+		    FunctionalPart prev = null;
+		    FunctionalPart current = dummy.next;
+		    FunctionalPart next = null;
+		    while (current != null) {
+		        next = current.next;
+		        current.next = prev;
+		        prev = current;
+		        current = next;
+		    }
+		    dummy.next = prev; // Update the dummy's next to the new first element
+		    
+		    
+		    // Perform stable insertion sort directly using the reversed list
+		    FunctionalPart sorted = dummy.next;
+		    dummy.next = null; // Detach the list temporarily
+		    
+		    while (sorted != null) {
+		        current = sorted;
+		        sorted = sorted.next; // Move to the next part in the sorted list
+		        current.next = null; // Detach the current part from the list
+		        
+		        // Insert the current part into the sorted list
+		        prev = dummy;
+		        next = dummy.next;
+		        while (next != null && comparator.compare(next, current) < 0) {
+		            prev = next;
+		            next = next.next;
+		        }
+		        prev.next = current;
+		        current.next = next;
+		    }
+	    }
+	    
+	    assert wellFormed() : "invariant broken by setComparator";
 	}
+
 	
 
 	/**
