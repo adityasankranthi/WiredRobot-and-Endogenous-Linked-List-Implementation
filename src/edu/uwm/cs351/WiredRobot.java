@@ -113,31 +113,37 @@ public class WiredRobot implements Robot {
 	 */
 	public FunctionalPart getFirst() {
 		 // TODO
+		assert wellFormed() : "Invariant broken by getFirst";
 		return dummy.next;
 	}
 
 	// TODO: the three robot methods
-	@Override
+	/**
+	 * Add a part to the robot.
+	 * @param function the type of part this is (arm, leg, etc), must not be null
+	 * @param part the part to add, must not be null.
+	 * @return whether the part was added.
+	 * @exception NullPointerException if the function or part is null
+	 */
+	@Override // required
 	public boolean addPart(String function, Part part) {
 		assert wellFormed(): "invariant broke before addPart";
 		if (part == null || function == null) throw new NullPointerException("function or part is null");
 		if(!(part instanceof FunctionalPart)) throw new IllegalArgumentException("parameter part must be a Functional Part");
 	    FunctionalPart newPart = (FunctionalPart) part; 
 	    if (newPart.function != null) throw new IllegalArgumentException("part is already in a robot");
-	    FunctionalPart lag = dummy;
-	    FunctionalPart cursor = getFirst();
 	    newPart.function = function;
-	    while (cursor != null && comparator.compare(cursor, newPart) < 0) {
-	        lag = cursor;
-	        cursor = cursor.next;
-	    }
-	    newPart.next = cursor;
-	    lag.next = newPart;
+	    insert(newPart);
 	    assert wellFormed(): "invariant broke after addPart";
 	    return true;
 	}
 
-	@Override
+	/**
+	 * Remove a part from the robot if there is one with this function.
+	 * @param function the type of part to remove, null means <em>any</em> part
+	 * @return part that was removed
+	 */
+	@Override // required
 	public Part removePart(String function) {
 	    assert wellFormed(): "invariant broke before removePart";
 	    FunctionalPart result = null;
@@ -158,7 +164,13 @@ public class WiredRobot implements Robot {
 	    return result;
 	}
 
-	@Override
+	/**
+	 * Return the part with the given function.
+	 * @param function the type of part to look for, null means <em>any</em> part
+	 * @param index zero-based index of part to return of the given type, must not be negative
+	 * @return indicated part, or null if no such part (index is at least the number of this kind of kind)
+	 */
+	@Override // required
 	public Part getPart(String function, int index) {
 	    assert wellFormed(): "invariant broke before getPart";
 	    if(index < 0) throw new IllegalArgumentException("Negative index");
@@ -181,7 +193,7 @@ public class WiredRobot implements Robot {
 
 	/**
 	 * Change the comparator used to order the robot parts.
-	 * The parts will be reorganized as necessary to accomodate the new order,
+	 * The parts will be reorganized as necessary to accommodate the new order,
 	 * but two parts will be reordered only if necessary.
 	 * (The sorting is "stable".) 
 	 * @param comp comparator to use, if null, then henceforth the parts
@@ -219,27 +231,33 @@ public class WiredRobot implements Robot {
 	        current.next = null; // Detach the current part from the list
 	        
 	        // Insert the current part into the sorted list
-	        prev = dummy;
-	        next = dummy.next;
-	        while (next != null && comparator.compare(next, current) < 0) {
-	            prev = next;
-	            next = next.next;
-	        }
-	        prev.next = current;
-	        current.next = next;
+	        insert(current);
 	    }
 	    assert wellFormed() : "invariant broken by setComparator";
 	}
 
+	/**
+	 * helper method to insert a single part into the list
+	 * @param p, part to insert in the list.
+	 */
+	private void insert(FunctionalPart p) {
+		FunctionalPart lag = dummy;
+	    FunctionalPart cursor = getFirst();
+	    while (cursor != null && comparator.compare(cursor, p) < 0) {
+	        lag = cursor;
+	        cursor = cursor.next;
+	    }
+	    p.next = cursor;
+	    lag.next = p;
+    }
 	
-
 	/**
 	 * Class for internal testing.  Do not modify.
 	 * Do not use in client/application code
 	 */
 	public static class Spy {
 		/**
-		 * A public versio of the data structure's internal node class.
+		 * A public version of the data structure's internal node class.
 		 * This class is only used for testing.
 		 */
 		public static class Part extends FunctionalPart {

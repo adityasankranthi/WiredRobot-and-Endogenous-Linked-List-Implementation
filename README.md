@@ -32,14 +32,17 @@ Friday 10pm deadline.*
 ### Review
 
 #### Did I correctly anticipate the difficulties?
+Yes, I correctly anticipated every difficulty. 
 
 #### How did the plan go?
-
+The plan went wonderful as I followed the TODO list provided. I am very happy with the work flow.
 ### Preview
 
 #### What should I do differently for next week's homework assignment?
+If I can follow the exact same steps that I followed in this homework and started early that would be great.
 
 #### Do I need more resources?
+I did not find myself needing more resources.
 
 ## Optional Feedback
 
