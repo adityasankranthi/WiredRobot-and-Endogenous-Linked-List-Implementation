@@ -47,7 +47,6 @@ public class WiredRobot implements Robot {
 	
 	private boolean wellFormed() {
 		// Invariant:
-		// TODO
 		// 1. The comparator is not null
 		if (comparator == null) return report("Comparator is null");;
 		// 2. the dummy is not null
@@ -100,7 +99,6 @@ public class WiredRobot implements Robot {
 	 * @param comp order to use, if null, then unordered
 	 */
 	public WiredRobot(Comparator<FunctionalPart> comp) {
-		// TODO
 		if (comp != null) this.comparator = comp;
 		else this.comparator = nonDiscrimination;
         this.dummy = new FunctionalPart();
@@ -112,12 +110,10 @@ public class WiredRobot implements Robot {
 	 * @return the first part, null if this robot is empty
 	 */
 	public FunctionalPart getFirst() {
-		 // TODO
 		assert wellFormed() : "Invariant broken by getFirst";
 		return dummy.next;
 	}
 
-	// TODO: the three robot methods
 	/**
 	 * Add a part to the robot.
 	 * @param function the type of part this is (arm, leg, etc), must not be null
